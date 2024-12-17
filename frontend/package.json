@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng serve",
+    "build": "node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve --ssl",
      "watch": "ng serve --watch --configuration development",
      "test": "ng test"
   },
