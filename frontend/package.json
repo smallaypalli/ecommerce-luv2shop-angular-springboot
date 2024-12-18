@@ -29,7 +29,7 @@
     "rxjs": "^7.4.0",
     "stripe": "^10.2.0",
     "tslib": "^2.3.0",
-    "zone.js": "~0.14.2"
+    "zone.js": "~0.14.2",
 	 "@rx-angular/cdk": "18.0.0",
     "@rx-angular/template": "18.0.0"
   },
