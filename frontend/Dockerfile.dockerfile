@@ -2,9 +2,11 @@ FROM node:14.20.0-alpine as build
 
 WORKDIR /frontend
 
-COPY .
+COPY package*.json ./
 
 RUN npm install -g @angular/cli
+
+COPY . .
 
 RUN npm run build
 
