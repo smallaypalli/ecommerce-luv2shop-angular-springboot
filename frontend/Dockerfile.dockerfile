@@ -2,9 +2,9 @@ FROM node:14.20.0-alpine as build
 
 
 
-WORKDIR ./app
+WORKDIR /app
 
-RUN chmod 777 .
+RUN chmod -R 777 /app
 
 COPY package*.json ./
 
@@ -14,7 +14,10 @@ RUN npm install -g @angular/cli@16.2.6
 
 COPY  . .
 
-RUN chmod -R 777 node_modules
+RUN chmod -R 777 /node_modules
+RUN chmod -R 777 /app
+RUN chmod 777 -R ./
+
 
 RUN npm run build
 
