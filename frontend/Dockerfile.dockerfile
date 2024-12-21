@@ -2,7 +2,7 @@ FROM node:14.20.0-alpine as build
 
 
 
-WORKDIR /app
+WORKDIR ./app
 
 RUN chmod 777 .
 
@@ -14,7 +14,7 @@ RUN npm install -g @angular/cli@16.2.6
 
 COPY  . .
 
-RUN chmod 777 node_modules
+RUN chmod -R 777 node_modules
 
 RUN npm run build
 
