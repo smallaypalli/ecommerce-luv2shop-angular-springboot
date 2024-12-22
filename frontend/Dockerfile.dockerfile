@@ -1,11 +1,11 @@
 FROM node:14.20.0-alpine as build
 
-USER node
+
 
 WORKDIR /app
 
 RUN chmod -R 777 /app
-RUN chmod -R 777 node_modules
+
 
 COPY package*.json ./
 
