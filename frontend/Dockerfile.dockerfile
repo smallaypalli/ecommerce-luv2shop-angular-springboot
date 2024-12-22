@@ -12,7 +12,8 @@ RUN npm install
 
 RUN npm install -g @angular/cli@16.2.6
 
-COPY  . .
+COPY . /app
+
 
 RUN chmod -R 777 node_modules
 RUN chmod -R 777 /app
