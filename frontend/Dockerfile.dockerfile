@@ -7,7 +7,7 @@ WORKDIR /app
 RUN chmod -R 777 /app
 
 
-COPY  . . 
+COPY package*.json ./
 
 RUN npm install
 
@@ -18,7 +18,7 @@ COPY . /app
 
 RUN chmod -R 777 node_modules
 
-RUN chmod -R 777 /
+RUN chmod -R 777 /app/*
 
 
 RUN npm run build
