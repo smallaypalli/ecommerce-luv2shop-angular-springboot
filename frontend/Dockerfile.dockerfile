@@ -16,12 +16,14 @@ RUN npm install -g @angular/cli@16.2.6
 COPY . /app
 
 
+
+
+
+RUN npm run build
 RUN chmod -R 777 node_modules
 
 RUN chmod -R 777 /app/*
-
 RUN chmod -R 777 /app/.angular/cache/14.2.3/bable-webpack/*
-RUN npm run build
 
 CMD ["ng", "serve"]
 
