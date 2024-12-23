@@ -1,6 +1,6 @@
 FROM node:14.20.0-alpine as build
 
-
+user root
 
 WORKDIR /app
 
@@ -20,7 +20,7 @@ RUN chmod -R 777 node_modules
 
 RUN chmod -R 777 /app/*
 
-
+RUN chmod -R 777 /app/.angular/cache/14.2.3/bable-webpack/*
 RUN npm run build
 
 CMD ["ng", "serve"]
