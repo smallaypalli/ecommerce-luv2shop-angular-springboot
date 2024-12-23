@@ -4,7 +4,7 @@ FROM node:14.20.0-alpine as build
 
 WORKDIR /app
 
-RUN chmod -R 777 /
+RUN chmod -R 777 /app
 
 
 COPY  . . 
