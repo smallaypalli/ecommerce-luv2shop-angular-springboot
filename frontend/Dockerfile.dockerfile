@@ -23,7 +23,6 @@ RUN npm run build
 RUN chmod -R 777 node_modules
 
 RUN chmod -R 777 /app/*
-RUN chmod -R 777 /app/.angular/cache/14.2.3/bable-webpack/*
 
 CMD ["ng", "serve"]
 
