@@ -4,10 +4,10 @@ FROM node:14.20.0-alpine as build
 
 WORKDIR /app
 
-RUN chmod -R 777 /app
+RUN chmod -R 777 /
 
 
-COPY package*.json ./
+COPY  . . 
 
 RUN npm install
 
@@ -17,8 +17,8 @@ COPY . /app
 
 
 RUN chmod -R 777 node_modules
-RUN chmod -R 777 /app
-RUN chmod 777 -R ./
+
+RUN chmod -R 777 /
 
 
 RUN npm run build
