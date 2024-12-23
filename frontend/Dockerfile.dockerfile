@@ -1,6 +1,6 @@
 FROM node:14.20.0-alpine as build
 
-user root
+USER root
 
 WORKDIR /app
 
