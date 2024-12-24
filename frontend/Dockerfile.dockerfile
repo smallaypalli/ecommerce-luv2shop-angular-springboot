@@ -1,10 +1,10 @@
 FROM node:14.20.0-alpine as build
 
-USER node
+
 
 WORKDIR /app
 
-RUN chown -R node:root  /app
+RUN chown -R 777  /app
 
 
 COPY package*.json ./
