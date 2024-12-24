@@ -2,9 +2,9 @@ FROM node:14.20.0-alpine as build
 
 
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-RUN chown -R 777  /app
+RUN chown -R 777  /usr/src/app
 
 
 COPY package*.json ./
