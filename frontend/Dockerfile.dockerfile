@@ -26,7 +26,7 @@ FROM nginxinc/nginx-unprivileged
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 #### copy artifact build from the 'build environment'
-COPY --from=build /usr/src/app/dist/vitorspace/browser /usr/share/nginx/html
+COPY --from=build /usr/src/app/dist/angular-ecommerce /usr/share/nginx/html
 
 #### don't know what this is, but seems cool and techy
 CMD ["nginx", "-g", "daemon off;"]
