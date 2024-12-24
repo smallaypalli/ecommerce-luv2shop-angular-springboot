@@ -13,7 +13,7 @@ RUN npm install
 
 RUN npm install -g @angular/cli@16.2.6
 
-RUN mkdir -p /app/.angular && chmod -R 777 /app/.angular
+RUN mkdir -p /app/.angular && chmod -R 777 /app/.angular/*
 
 COPY . /app
 
