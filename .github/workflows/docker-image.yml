@@ -17,3 +17,6 @@ jobs:
      
     - name: Setup Docker
       run: docker --version #verify docker installation
+
+    - name: Create docker image
+      run: docker -build -t ecommerce-app:latest
