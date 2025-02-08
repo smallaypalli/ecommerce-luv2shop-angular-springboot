@@ -13,7 +13,7 @@ RUN apt-get udpate && at-get install -y maven && mvn clean package -DskipTests
 
 
 # Set jar dfile name
-ARG JAR_FILE=target/ecommerce-0.0.1-SNAPSHOT.jar
+ARG JAR_FILE=/app/target/ecommerce-0.0.1-SNAPSHOT.jar
 
 # Copy the bult jar file into the container
 COPY ${JAR_FILE} my-ecom.jar
