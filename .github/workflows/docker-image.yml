@@ -21,4 +21,4 @@ jobs:
     - name: current directory
       run: pwd
     - name: create docker image for backend
-      run : docker build --no-cache -t ecomm-app:latest .
+      run : docker build --no-cache -f Dockerfile-backend -t ecomm-app:latest .
