@@ -11,7 +11,7 @@
 	<groupId>com.luv2shopdev</groupId>
 	<artifactId>spring-boot-ecommerce</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot-ecommerce</name>
+	<name>ecommerce</name>
 	<description>Spring Boot Ecommerce Project</description>
 	<properties>
 		<java.version>11</java.version>
