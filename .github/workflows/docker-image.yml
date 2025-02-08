@@ -12,8 +12,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    -name : Checkout repository
-     uses : actions/checkout@v4  #checkout the repo
+    - name : Checkout repository
+      uses : actions/checkout@v4  #checkout the repo
      
     - name: Setup Docker
       run: docker --version #verify docker installation
