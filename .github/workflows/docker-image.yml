@@ -5,6 +5,7 @@ on:
     branches: [ "feature/sree-m-changes" ]
   pull_request:
     branches: [ "feature/sree-m-changes" ]
+  workflow_dispatch:
 
 jobs:
   build-and-push:
