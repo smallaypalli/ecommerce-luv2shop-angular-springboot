@@ -19,10 +19,10 @@ RUN apt-get update && apt-get install -y maven && mvn clean package -DskipTests
 RUN pwd
 RUN find . -name "ecommerce*.jar"
 
-#COPY target/ecommerce-0.0.1-SNAPSHOT.jar my-ecom.jar
+COPY ./target/ecommerce-0.0.1-SNAPSHOT.jar my-ecom.jar
 
 # Expose the application's port
-#EXPOSE 8080
+EXPOSE 8080
 
 # Run the java application
-#CMD ["java", "-jar", "my-ecom.jar"]
+CMD ["java", "-jar", "my-ecom.jar"]
