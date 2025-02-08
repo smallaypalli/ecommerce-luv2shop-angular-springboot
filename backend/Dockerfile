@@ -16,8 +16,8 @@ RUN apt-get update && apt-get install -y maven && mvn clean package -DskipTests
 
 # Copy the bult jar file into the container
 
-#RUN pwd
-#RUN find . -name ".jar"
+RUN pwd
+RUN find . -name ".jar"
 
 #COPY target/ecommerce-0.0.1-SNAPSHOT.jar my-ecom.jar
 
