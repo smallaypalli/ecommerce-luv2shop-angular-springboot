@@ -2,7 +2,7 @@ name: Build and Push to AWS ECR
 
 on:
   push:
-    branches: [ "feature/sree-m-changes" ]
+    branches: [ "main" ]
   pull_request:
     branches: [ "feature/sree-m-changes" ]
   workflow_dispatch:
