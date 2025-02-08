@@ -9,7 +9,7 @@ COPY . .
 
 # Install maven and build the project
 
-RUN apt-get update && at-get install -y maven && mvn clean package -DskipTests
+RUN apt-get update && apt-get install -y maven && mvn clean package -DskipTests
 
 
 # Set jar dfile name
