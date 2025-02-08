@@ -16,10 +16,9 @@ RUN apt-get update && apt-get install -y maven && mvn clean package -DskipTests
 
 # Copy the bult jar file into the container
 
-RUN pwd
 RUN find . -name "ecommerce*.jar"
 
-COPY ./target/ecommerce-0.0.1-SNAPSHOT.jar my-ecom.jar
+COPY target/ecommerce-0.0.1-SNAPSHOT.jar my-ecom.jar
 
 # Expose the application's port
 EXPOSE 8080
