@@ -1,5 +1,5 @@
 # Using an official jdk17 image
-FROM open-jdk:17-slim
+FROM open-jdk:17-jdk-slim
 # Set working directory
 
 WORKDIR /app
