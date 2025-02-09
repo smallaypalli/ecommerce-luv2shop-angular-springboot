@@ -37,15 +37,15 @@ jobs:
     - name: Setup docker compose
       run: | 
         sudo apt-get update
-        sudo apt-get install -y docker-compose
+        sudo apt-get install -y podman-compose
 # Build backend and push to docker hub
     - name: Run docker compose
       run: |
-        docker-compose -f podman-compose.yml build backend
+        podman-compose -f podman-compose.yml build backend
         docker push sreemare/ecomm-app:latest
 
 # Run docker compose
     - name: Run docker compose
       run: |
-          docker-compose -f podman-compose.yml up -d
+          podman-compose -f podman-compose.yml up -d
 
