@@ -6,6 +6,10 @@ FROM openjdk:17-jdk-slim
 # Set working directory
 WORKDIR /app
 
+# Copy the checked out source code into the container
+COPY ./backend .
+COPY ./backend/src/main/resources/application.properties /app/src/main/resources/application.properties
+
 # Install maven and build the project
 
 RUN apt-get update && apt-get install -y maven && mvn clean package -DskipTests
