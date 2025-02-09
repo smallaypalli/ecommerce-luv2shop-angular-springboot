@@ -31,7 +31,7 @@ jobs:
       run: pwd
 # Build docker image
     - name: create docker image for backend
-      run : docker build --no-cache -f Dockerfile-backend -t ecomm-app:latest .
+      run : docker build --no-cache -f Dockerfile-backend -t sreemare/ecomm-app:latest .
 
 # Push docker image to docker hub
     - name: push docker image to docker hub
