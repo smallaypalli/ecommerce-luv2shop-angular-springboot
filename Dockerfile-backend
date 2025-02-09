@@ -4,8 +4,12 @@ FROM openjdk:17-jdk-slim
 
 
 # Install mysql client and server
-RUN apt-get update && apt-get install -y mysql-server
-
+# Update package lists and add MySQL official repo
+RUN apt-get update && apt-get install -y wget gnupg \
+    && wget https://dev.mysql.com/get/mysql-apt-config_0.8.24-1_all.deb \
+    && dpkg -i mysql-apt-config_0.8.24-1_all.deb \
+    && apt-get update \
+    && apt-get install -y mysql-server
 # Set working directory
 WORKDIR /app
 
