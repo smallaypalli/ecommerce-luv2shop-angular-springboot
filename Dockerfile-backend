@@ -6,12 +6,19 @@ FROM openjdk:17-jdk-slim
 # Install mysql client and server
 # Update package lists and add MySQL official repo
 # Install necessary dependencies
+# Install necessary dependencies and add MySQL GPG key
 RUN apt-get update && apt-get install -y wget gnupg lsb-release \
     && wget -O- https://repo.mysql.com/RPM-GPG-KEY-mysql-2023 | gpg --dearmor | tee /usr/share/keyrings/mysql.gpg > /dev/null \
     && echo "deb [signed-by=/usr/share/keyrings/mysql.gpg] http://repo.mysql.com/apt/debian bullseye mysql-8.0" | tee /etc/apt/sources.list.d/mysql.list \
     && apt-get update \
-    && apt-get install -y mysql-server \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server \
     && rm -rf /var/lib/apt/lists/*
+
+# Set MySQL root password and disable prompt
+RUN echo "mysql-server mysql-server/root_password password rootpassword" | debconf-set-selections \
+    && echo "mysql-server mysql-server/root_password_again password rootpassword" | debconf-set-selections
+
+
 # Set working directory
 WORKDIR /app
 
