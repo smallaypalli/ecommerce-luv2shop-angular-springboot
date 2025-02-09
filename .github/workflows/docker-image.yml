@@ -32,3 +32,7 @@ jobs:
 # Build docker image
     - name: create docker image for backend
       run : docker build --no-cache -f Dockerfile-backend -t sreemare/ecomm-app:latest .
+# Push docker image to docker hub
+    - name: push docker image to docker hub
+      run: |
+        docker push sreemare/ecomm-app:latest
