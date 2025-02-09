@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
-    branches: [ "feature/sree-m-changes" ]
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -14,11 +14,25 @@ jobs:
     steps:
     - name : Checkout repository
       uses : actions/checkout@v4  #checkout the repo
-     
-    - name: Setup Docker
+# Setting up docker
+    - name: Check docker version
       run: docker --version #verify docker installation
+    - name: Setup docker buildx (this is needed for docker build and pushing images)
+      run: docker/setup-buildx-action@v2
+# Login to Docker Hub
+    - name: Login to dockerhub
+      uses: docker/login-action@v2
+      with:
+        username: sreemare
+        password: dckr_pat_LCcXpEsoXaija9CUaxSYO0ZLWxU
 
     - name: current directory
       run: pwd
+# Build docker image
     - name: create docker image for backend
       run : docker build --no-cache -f Dockerfile-backend -t ecomm-app:latest .
+
+# Push docker image to docker hub
+    - name: push docker image to docker hub
+      run: |
+          docker push sreemare/ecomm-app:latest
