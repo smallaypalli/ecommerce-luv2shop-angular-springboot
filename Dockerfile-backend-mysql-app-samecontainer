@@ -1,0 +1,38 @@
+# Using an official jdk17 image
+FROM openjdk:17-jdk-slim
+# Set working directory
+
+
+# Install mysql client and server
+# Update package lists and add MySQL official repo
+# Install necessary dependencies
+# Install necessary dependencies and add MySQL GPG key
+RUN apt-get update && apt-get install -y wget gnupg lsb-release \
+    && wget -O- https://repo.mysql.com/RPM-GPG-KEY-mysql-2023 | gpg --dearmor | tee /usr/share/keyrings/mysql.gpg > /dev/null \
+    && echo "deb [signed-by=/usr/share/keyrings/mysql.gpg] http://repo.mysql.com/apt/debian bullseye mysql-8.0" | tee /etc/apt/sources.list.d/mysql.list \
+    && apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set MySQL root password and disable prompt
+RUN echo "mysql-server mysql-server/root_password password rootpassword" | debconf-set-selections \
+    && echo "mysql-server mysql-server/root_password_again password rootpassword" | debconf-set-selections
+
+
+# Set working directory
+WORKDIR /app
+
+# Copy the checked out source code into the container
+COPY ./backend .
+COPY ./backend/src/main/resources/application.properties /app/src/main/resources/application.properties
+
+# Install maven and build the project
+
+RUN apt-get update && apt-get install -y maven && mvn clean package -DskipTests
+
+
+# Expose the application's port
+EXPOSE 8080 3306
+
+# Run the java application
+CMD service mysql start && java -jar target/ecommerce-0.0.1-SNAPSHOT.jar

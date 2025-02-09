@@ -30,10 +30,22 @@ jobs:
     - name: current directory
       run: pwd
 # Build docker image
-    - name: create docker image for backend
-      run : docker build --no-cache -f Dockerfile-backend -t sreemare/ecomm-app:latest .
+#    - name: create docker image for backend
+#      run : docker build --no-cache -f Dockerfile-backend -t sreemare/ecomm-app:latest .
 
-# Push docker image to docker hub
-    - name: push docker image to docker hub
+# Setup docker compose
+    - name: Setup docker compose
+      run: | 
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
+# Build backend and push to docker hub
+    - name: Run docker compose
       run: |
-          docker push sreemare/ecomm-app:latest
+        docker-compose -f podman-compose.yml build backend
+        docker push sreemare/ecomm-app:latest
+
+# Run docker compose
+    - name: Run docker compose
+      run: |
+          docker-compose -f podman-compose.yml up -d
+
