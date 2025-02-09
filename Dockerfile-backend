@@ -7,11 +7,11 @@ FROM openjdk:17-jdk-slim
 # Update package lists and add MySQL official repo
 # Install necessary dependencies
 RUN apt-get update && apt-get install -y wget gnupg lsb-release \
-    && wget https://dev.mysql.com/get/mysql-apt-config_0.8.24-1_all.deb \
-    && dpkg -i mysql-apt-config_0.8.24-1_all.deb \
+    && wget -O- https://repo.mysql.com/RPM-GPG-KEY-mysql-2023 | gpg --dearmor | tee /usr/share/keyrings/mysql.gpg > /dev/null \
+    && echo "deb [signed-by=/usr/share/keyrings/mysql.gpg] http://repo.mysql.com/apt/debian bullseye mysql-8.0" | tee /etc/apt/sources.list.d/mysql.list \
     && apt-get update \
     && apt-get install -y mysql-server \
-    && rm -f mysql-apt-config_0.8.24-1_all.deb
+    && rm -rf /var/lib/apt/lists/*
 # Set working directory
 WORKDIR /app
 
