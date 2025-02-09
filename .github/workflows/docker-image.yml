@@ -17,11 +17,12 @@ jobs:
 # Setting up docker
     - name: Check docker version
       run: docker --version #verify docker installation
+
     - name: Setup docker buildx (this is needed for docker build and pushing images)
-      run: docker/setup-buildx-action@v2
+      run: docker/setup-buildx-action@v4
 # Login to Docker Hub
     - name: Login to dockerhub
-      uses: docker/login-action@v2
+      uses: docker/login-action@v4
       with:
         username: sreemare
         password: dckr_pat_LCcXpEsoXaija9CUaxSYO0ZLWxU
