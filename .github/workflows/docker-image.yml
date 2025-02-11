@@ -77,13 +77,6 @@ jobs:
 
     - name: Install Docker and Deploy App
       run: |
-        ssh -o StrictHostKeyChecking=no -i MyGitHubKey.pem ubuntu@${{ env.EC2_PUBLIC_IP }} << 'EOF'
-        sudo apt update -y
-        sudo apt install -y docker.io
-        sudo systemctl start docker
-        sudo systemctl enable docker
-        sudo usermod -aG docker ubuntu
-      
         docker pull sreemare/ecomm-app:latest
         docker run -d -p 8080:8080 --name ecomm-app sreemare/ecomm-app:latest
         EOF
