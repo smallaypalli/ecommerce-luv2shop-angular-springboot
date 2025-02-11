@@ -21,8 +21,8 @@ jobs:
     - name: Set up SSH Key
       run: |
          mkdir -p ~/.ssh
-         echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/MyGitHubKey
-         chmod 600 ~/.ssh/MyGitHubKey
+         echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/productization
+         chmod 600 ~/.ssh/productization
 
     - name : Checkout repository
       uses : actions/checkout@v4  #checkout the repo
