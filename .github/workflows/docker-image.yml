@@ -79,5 +79,3 @@ jobs:
       run: |
         docker pull sreemare/ecomm-app:latest
         docker run -d -p 8080:8080 --name ecomm-app sreemare/ecomm-app:latest
-        EOF
-
