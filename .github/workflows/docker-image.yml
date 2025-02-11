@@ -57,7 +57,9 @@ jobs:
            --image-id ami-08ea187523fb45736 \
            --instance-type t2.micro \
            --key-name MyGitHubKey \
-           --security-groups default \
+           --security-group-ids sg-044be64114fb8509c \
+           --subnet-id subnet-068bf1f3dddea1a68 \
+           --associate-public-ip-address \
            --query 'Instances[0].InstanceId' --output text)
          echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
     - name: Wait for EC2 to be Running
