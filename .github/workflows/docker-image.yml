@@ -12,6 +12,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name : Configure AWS and Docker Credentials
+      uses : aws-actions/configure-aws-credentials@v1
+      with :
+          aws-access-key-id: ${{AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{AWS_SECRET_ACCESS_KEY}}
+          aws-region: ${{AWS_REGION}}
+    - name: Set up SSH Key
+      run: |
+         mkdir -p ~/.ssh
+         echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/MyGitHubKey
+         chmod 600 ~/.ssh/MyGitHubKey
+
     - name : Checkout repository
       uses : actions/checkout@v4  #checkout the repo
 # Setting up docker
@@ -24,8 +36,8 @@ jobs:
     - name: Login to dockerhub
       uses: docker/login-action@v2
       with:
-        username: sreemare
-        password: dckr_pat_LCcXpEsoXaija9CUaxSYO0ZLWxU
+        username: ${{DOCKER_USER}}
+        password: ${{DOCKER_KEY}}
 
     - name: current directory
       run: pwd
@@ -36,3 +48,41 @@ jobs:
     - name: push docker image to docker hub
       run: |
         docker push sreemare/ecomm-app:latest
+
+# Pull the image and run container
+    - name : Launch EC2 Instance
+      id: ec2
+      run: |
+        INSTANCE_ID=$(aws ec2 run-instances \
+           --image-id ami-0c55b159cbfafe1f0 \  # Ubuntu 22.04 AMI
+           --instance-type t2.micro \
+           --key-name MyGitHubKey \
+           --security-groups default \
+           --query 'Instances[0].InstanceId' --output text)
+         echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
+    - name: Wait for EC2 to be Running
+      run: |
+          aws ec2 wait instance-running --instance-ids ${{ env.INSTANCE_ID }}
+    - name: Get EC2 Public IP
+      id: ec2-ip
+      run: |
+            PUBLIC_IP=$(aws ec2 describe-instances \
+              --instance-ids ${{ env.INSTANCE_ID }} \
+              --query 'Reservations[0].Instances[0].PublicIpAddress' \
+              --output text)
+            echo "EC2_PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
+            echo "EC2 instance is running at: $PUBLIC_IP"
+
+    - name: Install Docker and Deploy App
+      run: |
+        ssh -o StrictHostKeyChecking=no -i MyGitHubKey.pem ubuntu@${{ env.EC2_PUBLIC_IP }} << 'EOF'
+        sudo apt update -y
+        sudo apt install -y docker.io
+        sudo systemctl start docker
+        sudo systemctl enable docker
+        sudo usermod -aG docker ubuntu
+      
+        docker pull sreemare/ecomm-app:latest
+        docker run -d -p 8080:8080 --name ecomm-app sreemare/ecomm-app:latest
+        EOF
+
