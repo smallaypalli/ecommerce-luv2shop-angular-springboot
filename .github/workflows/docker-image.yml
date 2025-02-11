@@ -54,7 +54,7 @@ jobs:
       id: ec2
       run: |
         INSTANCE_ID=$(aws ec2 run-instances \
-           --image-id ami-0c55b159cbfafe1f0 \  # Ubuntu 22.04 AMI
+           --image-id ami-0c55b159cbfafe1f0 \
            --instance-type t2.micro \
            --key-name MyGitHubKey \
            --security-groups default \
