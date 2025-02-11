@@ -56,7 +56,7 @@ jobs:
         INSTANCE_ID=$(aws ec2 run-instances \
            --image-id ami-08ea187523fb45736 \
            --instance-type t2.micro \
-           --key-name MyGitHubKey \
+           --key-name productization \
            --security-group-ids sg-044be64114fb8509c \
            --subnet-id subnet-068bf1f3dddea1a68 \
            --associate-public-ip-address \
