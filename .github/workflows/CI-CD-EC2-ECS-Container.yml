@@ -101,7 +101,14 @@ jobs:
                 "containerName": "mysqlservice",
                 "condition": "START"
               }
-            ]
+            ],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/ecomm-app",
+                    "awslogs-region": "${{secrets.AWS_REGION}}",
+                    "awslogs-stream-prefix": "ecomm-app"
+                }
           }]'
 
     - name: Create ECS Service for MySQL and App containers
