@@ -19,4 +19,4 @@ RUN apt-get update && apt-get install -y maven && mvn clean package -DskipTests
 EXPOSE 8080
 
 # Run the java application
-CMD java -jar target/ecommerce-0.0.1-SNAPSHOT.jar
+CMD ["java", "-jar", "target/ecommerce-0.0.1-SNAPSHOT.jar", "--logging.file.name=/dev/stdout", "--logging.level.root=INFO"]
