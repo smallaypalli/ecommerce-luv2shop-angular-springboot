@@ -75,7 +75,17 @@ jobs:
             echo "EC2_PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
             echo "EC2 instance is running at: $PUBLIC_IP"
 
-    - name: Install Docker and Deploy App
+    - name: Install Docker and Deploy App on EC2
       run: |
-        docker pull sreemare/ecomm-app:latest
-        docker run -d -p 8080:8080 --name ecomm-app sreemare/ecomm-app:latest
+        sudo apt update && sudo apt install -y openssh-client
+        echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > private_key.pem
+        chmod 600 privakte_key.pem
+        
+        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@{{ env.EC2_PUBLIC_IP }} << EOF
+          sudo apt update
+          sudo apt install -y docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
+          docker pull sreemare/ecomm-app:latest
+          docker run -d -p 8080:8080 --name ecomm-app sreemare/ecomm-app:latest
+        EOF
