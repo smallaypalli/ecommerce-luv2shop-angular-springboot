@@ -75,7 +75,7 @@ jobs:
             echo "EC2_PUBLIC_IP=$PUBLIC_IP" >> $GITHUB_ENV
             echo "EC2 instance is running at: $PUBLIC_IP"
 
-    - name: Install Docker and Deploy App on EC2
+    - name:  SSH to EC2 and Containerize app
       run: |
         sudo apt update && sudo apt install -y openssh-client
         echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > private_key.pem
