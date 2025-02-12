@@ -71,7 +71,7 @@ jobs:
       run: |
         aws ecs register-task-definition --family ecomm-task-definition \
           --network-mode awsvpc \
-          --requiresCompatibilities: ["FARGATE"] \
+          --requires-compatibilities: ["FARGATE"] \
           --cpu:512 \
           --memory:1024 \
           --container-definitions '[{
