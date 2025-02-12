@@ -71,9 +71,9 @@ jobs:
       run: |
         aws ecs register-task-definition --family ecomm-task-definition \
           --network-mode awsvpc \
-          --requires-compatibilities: ["FARGATE"] \
-          --cpu:512 \
-          --memory:1024 \
+          --requires-compatibilities "FARGATE" \
+          --cpu 512 \
+          --memory 1024 \
           --container-definitions '[{
             "name": "mysql",
             "image": "mysql:8",
