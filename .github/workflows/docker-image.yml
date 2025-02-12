@@ -96,6 +96,6 @@ jobs:
             -p 3306:3306 mysql:8
           # pull the ecomm ap and run the container         
           docker pull sreemare/ecomm-app:latest
-          docker run -d -p 8080:8443 --name ecomm-app \
+          docker run -d -p 8080:8080 --name ecomm-app \
              --network sree-network sreemare/ecomm-app:latest
         EOF
