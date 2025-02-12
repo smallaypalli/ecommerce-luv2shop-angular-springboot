@@ -1,0 +1,108 @@
+name: CI/CD - AWS EC2 + ECS Container
+
+on:
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
+ #   branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name : Configure AWS and Docker Credentials
+      uses : aws-actions/configure-aws-credentials@v1
+      with :
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: ${{secrets.AWS_REGION}}
+    #- name: Set up SSH Key
+     # run: |
+      #   mkdir -p ~/.ssh
+       #  echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/productization
+        # chmod 600 ~/.ssh/productization
+
+    - name : Checkout repository
+      uses : actions/checkout@v4  #checkout the repo
+# Setting up docker
+    - name: Check docker version
+      run: docker --version #verify docker installation
+
+    - name: Setup docker buildx (this is needed for docker build and pushing images)
+      uses: docker/setup-buildx-action@v2
+# Login to Docker Hub
+    - name: Login to dockerhub
+      uses: docker/login-action@v2
+      with:
+        username: ${{secrets.DOCKER_USER}}
+        password: ${{secrets.DOCKER_KEY}}
+
+    - name: current directory
+      run: pwd
+# Build docker image
+    - name: create docker image for backend
+      run : docker build --no-cache -f Dockerfile-backend -t sreemare/ecomm-app:latest .
+# Push docker image to docker hub
+    - name: push docker image to docker hub
+      run: |
+        docker push sreemare/ecomm-app:latest
+
+
+#    - name: Create ECR repository (optional)
+#      run: |
+#        aws ecr create-repository --repository-name ecomm-app --region ${{ secrets.AWS_REGION }} || echo "Repository already exists"
+
+#    - name: Login to Amazon ECR
+#      run: |
+#        aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+#    - name: Push image to ECR (optional)
+#      run: |
+#        docker tag sreemare/ecomm-app:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/ecomm-app:latest
+#        docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/ecomm-app:latest
+
+    - name: Create ECS cluster (if not already created)
+      run: |
+        aws ecs create-cluster --cluster-name ecomm-cluster --region ${{ secrets.AWS_REGION }} || echo "Cluster already exists"
+
+    - name: Create Task Definition for MySQL and App containers
+      run: |
+        aws ecs register-task-definition --family ecomm-task-definition \
+          --network-mode awsvpc \
+          --container-definitions '[{
+            "name": "mysql",
+            "image": "mysql:8",
+            "essential": true,
+            "environment": [
+              {"name": "MYSQL_ROOT_PASSWORD", "value": "root"},
+              {"name": "MYSQL_DATABASE", "value": "mysql"}
+            ],
+            "portMappings": [
+              {"containerPort": 3306, "hostPort": 3306}
+            ]
+          }, {
+            "name": "ecomm-app",
+            "image": "sreemare/ecomm-app:latest",
+            "essential": true,
+            "portMappings": [
+              {"containerPort": 8080, "hostPort": 8080}
+            ],
+            "dependsOn": [
+              {
+                "containerName": "mysql",
+                "condition": "START"
+              }
+            ]
+          }]'
+
+    - name: Create ECS Service for MySQL and App containers
+      run: |
+        aws ecs create-service --cluster ecomm-cluster \
+          --service-name ecomm-app-service \
+          --task-definition ecomm-task-definition \
+          --desired-count 1 \
+          --launch-type FARGATE \
+          --network-configuration "awsvpcConfiguration={subnets=[subnet-068bf1f3dddea1a68], securityGroups=[sg-044be64114fb8509c], assignPublicIp=ENABLED}" \
+          --region ${{ secrets.AWS_REGION }}
