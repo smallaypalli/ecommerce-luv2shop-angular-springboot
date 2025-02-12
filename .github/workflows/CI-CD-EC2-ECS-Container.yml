@@ -75,7 +75,7 @@ jobs:
           --cpu 512 \
           --memory 1024 \
           --container-definitions '[{
-            "name": "mysql",
+            "name": "mysqlservice",
             "image": "mysql:8",
             "memory": 512,
             "cpu":256,
