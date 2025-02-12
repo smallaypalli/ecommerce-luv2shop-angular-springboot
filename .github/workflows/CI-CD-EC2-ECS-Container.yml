@@ -74,6 +74,8 @@ jobs:
           --container-definitions '[{
             "name": "mysql",
             "image": "mysql:8",
+            "memory": 512,
+            "cpu":256,
             "essential": true,
             "environment": [
               {"name": "MYSQL_ROOT_PASSWORD", "value": "root"},
@@ -85,6 +87,8 @@ jobs:
           }, {
             "name": "ecomm-app",
             "image": "sreemare/ecomm-app:latest",
+            "memory": 512,
+            "cpu":256,
             "essential": true,
             "portMappings": [
               {"containerPort": 8080, "hostPort": 8080}
