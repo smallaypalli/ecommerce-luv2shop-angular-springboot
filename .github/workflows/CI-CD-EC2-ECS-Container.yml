@@ -98,7 +98,7 @@ jobs:
             ],
             "dependsOn": [
               {
-                "containerName": "mysql",
+                "containerName": "mysqlservice",
                 "condition": "START"
               }
             ]
