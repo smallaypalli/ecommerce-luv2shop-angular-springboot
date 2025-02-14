@@ -97,6 +97,11 @@ jobs:
             "portMappings": [
               {"containerPort": 8080, "hostPort": 8080}
             ],
+            "environment": [
+                {"name": "SPRING_DATASOURCE_URL", "value": "jdbc:mysql://mysqlservice.ecomm.local:3306/mysql"},
+                {"name": "SPRING_DATASOURCE_USERNAME", "value": "root"},
+                {"name": "SPRING_DATASOURCE_PASSWORD", "value": "root"}
+            ],
             "dependsOn": [
               {
                 "containerName": "mysqlservice",
