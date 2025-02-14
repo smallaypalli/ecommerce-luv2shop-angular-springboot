@@ -98,7 +98,7 @@ jobs:
               {"containerPort": 8080, "hostPort": 8080}
             ],
             "environment": [
-                {"name": "SPRING_DATASOURCE_URL", "value": "jdbc:mysql://mysqlservice:3306/mysql"},
+                {"name": "SPRING_DATASOURCE_URL", "value": "jdbc:mysql://mysqlservice:3306/mysql?allowPublicKeyRetrieval=true&useSSL=false"},
                 {"name": "SPRING_DATASOURCE_USERNAME", "value": "root"},
                 {"name": "SPRING_DATASOURCE_PASSWORD", "value": "root"}
             ],
