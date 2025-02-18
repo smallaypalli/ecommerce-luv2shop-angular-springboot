@@ -118,7 +118,29 @@ jobs:
             }
           }]'
 
-    - name: Create ECS Service for MySQL and App containers
+    - name: Create ECS Service for MySQL
+      run: |
+        aws ecs create-service --cluster ecomm-cluster \
+          --service-name mysqlservice \
+          --task-definition ecomm-task-definition \
+          --desired-count 1 \
+          --launch-type FARGATE \
+          --network-configuration "awsvpcConfiguration={subnets=[subnet-068bf1f3dddea1a68], securityGroups=[sg-044be64114fb8509c], assignPublicIp=ENABLED}" \
+          --region ${{ secrets.AWS_REGION }}
+
+    - name: Wait for MySQL to Start
+      run: sleep 60  # Wait 60 seconds for MySQL to initialize
+
+    - name: Get MySQL Task IP
+      run: |
+        MYSQL_IP=$(aws ecs list-tasks --cluster ecomm-cluster --service-name mysqlservice \
+          --query "taskArns[0]" --output text | xargs -I {} \
+          aws ecs describe-tasks --cluster ecomm-cluster --tasks {} \
+          --query "tasks[0].containers[0].networkInterfaces[0].privateIpv4Address" --output text)
+        echo "MYSQL_IP=$MYSQL_IP" >> $GITHUB_ENV
+        echo "MySQL is running at $MYSQL_IP"
+
+    - name: Create ECS Service for ecomm-app
       run: |
         aws ecs create-service --cluster ecomm-cluster \
           --service-name ecomm-app-service \
