@@ -98,7 +98,7 @@ jobs:
               {"containerPort": 8080, "hostPort": 8080}
             ],
             "environment": [
-                {"name": "SPRING_DATASOURCE_URL", "value": "jdbc:mysql://mysqlservice:3306/mysql?allowPublicKeyRetrieval=true&useSSL=false"},
+                {"name": "SPRING_DATASOURCE_URL", "value": "jdbc:mysql://mysqlservice.ecomm-namespace:3306/mysql?allowPublicKeyRetrieval=true&useSSL=false"},
                 {"name": "SPRING_DATASOURCE_USERNAME", "value": "root"},
                 {"name": "SPRING_DATASOURCE_PASSWORD", "value": "root"}
             ],
@@ -126,6 +126,7 @@ jobs:
           --desired-count 1 \
           --launch-type FARGATE \
           --network-configuration "awsvpcConfiguration={subnets=[subnet-068bf1f3dddea1a68], securityGroups=[sg-044be64114fb8509c], assignPublicIp=ENABLED}" \
+          --service-registries '[{"registryArn":"arn:aws:servicediscovery:us-east-1:234464728607:service/srv-vp7diaoiqd5akqkn"}]'
           --region ${{ secrets.AWS_REGION }}
 
     - name: Wait for MySQL to Start
