@@ -126,7 +126,7 @@ jobs:
           --desired-count 1 \
           --launch-type FARGATE \
           --network-configuration "awsvpcConfiguration={subnets=[subnet-068bf1f3dddea1a68], securityGroups=[sg-044be64114fb8509c], assignPublicIp=ENABLED}" \
-          --service-registries '[{"registryArn":"arn:aws:servicediscovery:us-east-1:234464728607:service/srv-vp7diaoiqd5akqkn"}]'
+          --service-registries '[{"registryArn":"arn:aws:servicediscovery:us-east-1:234464728607:service/srv-vp7diaoiqd5akqkn"}]' \
           --region ${{ secrets.AWS_REGION }}
 
     - name: Wait for MySQL to Start
